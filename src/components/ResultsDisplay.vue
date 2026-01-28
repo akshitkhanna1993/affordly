@@ -158,7 +158,7 @@
           <div>
             <span class="text-gray-600">Resale Value:</span>
             <div class="font-medium">
-              {{ (item.resale_pct * 100).toFixed(0) }}%
+              {{ ((item.resale_pct || 0) * 100).toFixed(0) }}%
             </div>
           </div>
         </div>

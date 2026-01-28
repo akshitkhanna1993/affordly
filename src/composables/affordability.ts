@@ -99,7 +99,7 @@ export function useAffordabilityCalculator(
         verdict = "Affordable but poor value";
         reasons.push("Low goal score - consider alternatives");
       } else {
-        verdict = "Don't buy now";
+        verdict = "Don't buy now 🚫";
         reasons.push("Very poor value - not recommended");
       }
     }
