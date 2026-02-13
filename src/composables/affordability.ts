@@ -45,22 +45,27 @@ export function useAffordabilityCalculator(
     return 0;
   });
 
-  // Calculate goal-based scoring
+  // Calculate goal-based scoring (0–100 scale)
   const goalScore = computed(() => {
     const goalYears = item.lifespan_months / 12;
+    const annualSavingsBudget =
+      profile.income_monthly * profile.savings_rate_floor;
     const costYears =
-      netCost.value / (profile.income_monthly * profile.savings_rate_floor);
-    const expToCostRatio = goalYears / costYears;
+      annualSavingsBudget > 0 ? netCost.value / annualSavingsBudget : 0;
+    const expToCostRatio = costYears > 0 ? goalYears / costYears : 0;
 
-    // Calculate impact based on usage frequency
+    // Impact from usage (1–5)
     let impact = 1;
     if (item.uses_per_week) {
-      impact = Math.min(5, item.uses_per_week / 2); // Scale with usage frequency
+      impact = Math.min(5, Math.max(1, item.uses_per_week / 2));
     } else if (item.hours_total) {
-      impact = Math.min(5, item.hours_total / 100); // Scale with total hours
+      impact = Math.min(5, Math.max(1, item.hours_total / 100));
     }
 
-    return Math.min(100, expToCostRatio * impact);
+    // Scale to 0–100 so reasonable purchases can reach "Buy now" (80+)
+    const rawScore = expToCostRatio * impact;
+    const scale = 12;
+    return Math.min(100, Math.round(rawScore * scale));
   });
 
   // Determine verdict and reasons

@@ -10,6 +10,26 @@
       </p>
 
       <form @submit.prevent="handleSubmit" class="space-y-6">
+        <!-- Currency -->
+        <div>
+          <label
+            for="currency"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Currency
+          </label>
+          <select
+            id="currency"
+            v-model="currency"
+            class="w-full md:w-48 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="INR">Rupees (₹)</option>
+            <option value="USD">Dollars ($)</option>
+            <option value="EUR">Euros (€)</option>
+            <option value="GBP">Pounds (£)</option>
+          </select>
+        </div>
+
         <!-- Basic Item Details -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Price -->
@@ -23,7 +43,7 @@
             <div class="relative">
               <span
                 class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >$</span
+                >{{ currencySymbol }}</span
               >
               <input
                 id="price"
@@ -49,7 +69,7 @@
             <div class="relative">
               <span
                 class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >$</span
+                >{{ currencySymbol }}</span
               >
               <input
                 id="recurring"
@@ -198,11 +218,21 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, computed } from "vue";
+import { reactive, computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { PurchaseItem } from "@/types/financial";
 
 const router = useRouter();
+
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  INR: "₹",
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+};
+
+const currency = ref<string>("INR");
+const currencySymbol = computed(() => CURRENCY_SYMBOLS[currency.value] ?? "₹");
 
 const form = reactive<Partial<PurchaseItem>>({
   price: 0,
@@ -234,8 +264,11 @@ const handleSubmit = () => {
       resale_pct: form.resale_pct || 0,
     } as PurchaseItem;
 
-    // Store in sessionStorage for the results page
-    sessionStorage.setItem("affordly-item", JSON.stringify(itemData));
+    // Store in sessionStorage for the results page (include currency for display)
+    sessionStorage.setItem(
+      "affordly-item",
+      JSON.stringify({ ...itemData, currency: currency.value })
+    );
     router.push("/results");
   }
 };

@@ -19,22 +19,16 @@
             >
               Monthly Net Income
             </label>
-            <div class="relative">
-              <span
-                class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >$</span
-              >
-              <input
-                id="income"
-                v-model.number="form.income_monthly"
-                type="number"
-                step="0.01"
-                min="0"
-                required
-                class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="5000"
-              />
-            </div>
+            <input
+              id="income"
+              v-model.number="form.income_monthly"
+              type="number"
+              step="0.01"
+              min="0"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="5000"
+            />
             <p class="text-sm text-gray-500 mt-1">
               Your take-home pay after taxes
             </p>
@@ -48,22 +42,16 @@
             >
               Monthly Essential Expenses
             </label>
-            <div class="relative">
-              <span
-                class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >$</span
-              >
-              <input
-                id="essentials"
-                v-model.number="form.essentials"
-                type="number"
-                step="0.01"
-                min="0"
-                required
-                class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="3000"
-              />
-            </div>
+            <input
+              id="essentials"
+              v-model.number="form.essentials"
+              type="number"
+              step="0.01"
+              min="0"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="3000"
+            />
             <p class="text-sm text-gray-500 mt-1">
               Rent, food, utilities, insurance, etc.
             </p>
@@ -77,22 +65,16 @@
             >
               Current Savings Balance
             </label>
-            <div class="relative">
-              <span
-                class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >$</span
-              >
-              <input
-                id="savings"
-                v-model.number="form.savings"
-                type="number"
-                step="0.01"
-                min="0"
-                required
-                class="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="10000"
-              />
-            </div>
+            <input
+              id="savings"
+              v-model.number="form.savings"
+              type="number"
+              step="0.01"
+              min="0"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="10000"
+            />
             <p class="text-sm text-gray-500 mt-1">
               Your emergency fund and savings
             </p>
@@ -137,15 +119,15 @@
           <div class="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span class="text-gray-600">Disposable Income:</span>
-              <span class="font-medium ml-2"
-                >${{ disposableIncome.toFixed(2) }}</span
-              >
+              <span class="font-medium ml-2">{{
+                disposableIncome.toFixed(2)
+              }}</span>
             </div>
             <div>
               <span class="text-gray-600">Monthly Savings Target:</span>
-              <span class="font-medium ml-2"
-                >${{ monthlySavingsTarget.toFixed(2) }}</span
-              >
+              <span class="font-medium ml-2">{{
+                monthlySavingsTarget.toFixed(2)
+              }}</span>
             </div>
           </div>
         </div>

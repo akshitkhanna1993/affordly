@@ -62,13 +62,14 @@
                     : 'text-red-600',
                 ]"
               >
-                ${{ result.math.free_cashflow.toFixed(2) }}
+                {{ currencySymbol }}{{ result.math.free_cashflow.toFixed(2) }}
               </span>
             </div>
             <div class="flex justify-between items-center">
               <span class="text-gray-600">Recurring Cost:</span>
               <span class="font-medium"
-                >${{ result.math.recurring.toFixed(2) }}</span
+                >{{ currencySymbol
+                }}{{ result.math.recurring.toFixed(2) }}</span
               >
             </div>
             <div class="flex justify-between items-center">
@@ -81,7 +82,8 @@
                     : 'text-red-600',
                 ]"
               >
-                ${{ result.math.post_savings_balance.toFixed(2) }}
+                {{ currencySymbol
+                }}{{ result.math.post_savings_balance.toFixed(2) }}
               </span>
             </div>
           </div>
@@ -110,7 +112,9 @@
             </div>
             <div class="flex justify-between items-center">
               <span class="text-gray-600">Net Cost:</span>
-              <span class="font-medium">${{ netCost.toFixed(2) }}</span>
+              <span class="font-medium"
+                >{{ currencySymbol }}{{ netCost.toFixed(2) }}</span
+              >
             </div>
             <div class="flex justify-between items-center">
               <span class="text-gray-600">Cost per Use/Hour:</span>
@@ -122,7 +126,8 @@
                     : 'text-green-600',
                 ]"
               >
-                ${{ result.math.cost_per_use_or_hour.toFixed(2) }}
+                {{ currencySymbol
+                }}{{ result.math.cost_per_use_or_hour.toFixed(2) }}
               </span>
             </div>
             <div
@@ -145,11 +150,15 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
           <div>
             <span class="text-gray-600">Price:</span>
-            <div class="font-medium">${{ item.price.toFixed(2) }}</div>
+            <div class="font-medium">
+              {{ currencySymbol }}{{ item.price.toFixed(2) }}
+            </div>
           </div>
           <div>
             <span class="text-gray-600">Monthly Cost:</span>
-            <div class="font-medium">${{ item.recurring.toFixed(2) }}</div>
+            <div class="font-medium">
+              {{ currencySymbol }}{{ item.recurring.toFixed(2) }}
+            </div>
           </div>
           <div>
             <span class="text-gray-600">Lifespan:</span>
@@ -193,10 +202,23 @@ import type { PurchaseItem, AffordabilityResult } from "@/types/financial";
 const router = useRouter();
 const profileStore = useProfileStore();
 
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  INR: "₹",
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+};
+
 const item = ref<PurchaseItem | null>(null);
 const result = ref<AffordabilityResult | null>(null);
 const netCost = ref(0);
 const goalScore = ref(0);
+
+const currencySymbol = computed(() => {
+  const c = (item.value as (PurchaseItem & { currency?: string }) | null)
+    ?.currency;
+  return CURRENCY_SYMBOLS[c ?? "INR"] ?? "₹";
+});
 
 const verdictClass = computed(() => {
   if (!result.value) return "bg-gray-100";
